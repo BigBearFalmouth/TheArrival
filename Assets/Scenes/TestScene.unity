@@ -241,7 +241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c73451d060b31b74ca7707d3e11deef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inkAsset: {fileID: 4900000, guid: 39909a5ea21e4493e8dab4c5821a7354, type: 3}
+  inkAsset: {fileID: 4900000, guid: db48b050d141a1940b353da9288006bb, type: 3}
   buttonPrefab: {fileID: 114227541933287688, guid: 6eb45f7bfc924df4ca00182535e5bd40,
     type: 2}
   textPrefab: {fileID: 114978243977232346, guid: bbbe82509cf5ee14fbd1b16505c756b1,

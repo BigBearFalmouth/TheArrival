@@ -28,6 +28,8 @@ public class InkManager : MonoBehaviour {
             Text storyText = Instantiate<Text>(textPrefab);
             storyText.text = inkStory.Continue();
 
+            Debug.Log("Story"+storyText.text);
+
             storyText.transform.SetParent(canvas.transform, false);
             if (inkStory.currentChoices.Count > 0)
             {
@@ -37,7 +39,7 @@ public class InkManager : MonoBehaviour {
                     Button button = Instantiate<Button>(buttonPrefab);
                     button.GetComponentInChildren<Text>().text = choice.text;
                     button.onClick.AddListener(() => OnClickButton(choice));
-
+                    Debug.Log("Choice" + choice.text);
                     button.transform.SetParent(canvas.transform, false);
                 }
             }
