@@ -11,10 +11,10 @@ VAR hasMetSisterDiaryEntry=false
 
 === menu ===
 +[Visit Bank]->bank
-+[Visit Post Office]->postOffice
-+[Visit Buchannan St Station]->buchannanStStation
-+[Visit Butchers]->butchers
-+[Visit Grand Central Hotel]->grandCentral
+//+[Visit Post Office]->postOffice
+//+[Visit Buchannan St Station]->buchannanStStation
+//+[Visit Butchers]->butchers
+//+[Visit Grand Central Hotel]->grandCentral
 *[Visit Underground]->underground
 +[Visit Queen St. Station]->queenSt
 +[End]->ending
@@ -23,6 +23,7 @@ VAR hasMetSisterDiaryEntry=false
     answersArray = [[NSArray alloc]initWithObjects:@"Introduce yourself",@"Exchange your money",@"Show English letter",@"Lost!", nil];
     responsesArray = [[NSArray alloc]initWithObjects:@"You introduce yourself. The woman doesn't bat an eyelid. She doesn't seem to be interested in what you have to say.",@"You hand over your Deutch Mark's. The woman counts over them and gives you a single coin in return. A single coin?! That was everything I had!",@"The woman looked at the letter, shakes her head, and hands you the note back.",@"Where ye' lookin fur?",nil];
 */
+//todo: the bank
 === bank ===
 This is the bank
 *[Back]->menu
