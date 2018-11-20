@@ -10,8 +10,9 @@ public class InkManager : MonoBehaviour {
     public TextAsset inkAsset;
     public Button buttonPrefab;
     public Text textPrefab;
-    public Canvas canvas;
-
+    //public Canvas canvas;
+    public GameObject TextPanel;
+    public GameObject ButtonPanel;
     Story inkStory;
 
     private void Awake()
@@ -30,7 +31,7 @@ public class InkManager : MonoBehaviour {
 
             Debug.Log("Story"+storyText.text);
 
-            storyText.transform.SetParent(canvas.transform, false);
+            storyText.transform.SetParent(TextPanel.transform, false);
             if (inkStory.currentChoices.Count > 0)
             {
                 for (int i = 0; i < inkStory.currentChoices.Count; i++)
@@ -40,7 +41,7 @@ public class InkManager : MonoBehaviour {
                     button.GetComponentInChildren<Text>().text = choice.text;
                     button.onClick.AddListener(() => OnClickButton(choice));
                     Debug.Log("Choice" + choice.text);
-                    button.transform.SetParent(canvas.transform, false);
+                    button.transform.SetParent(ButtonPanel.transform, false);
                 }
             }
         }
@@ -51,7 +52,11 @@ public class InkManager : MonoBehaviour {
     {
         inkStory.ChooseChoiceIndex(choice.index);
 
-        foreach(Transform child in canvas.transform)
+        foreach(Transform child in ButtonPanel.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach (Transform child in TextPanel.transform)
         {
             Destroy(child.gameObject);
         }
