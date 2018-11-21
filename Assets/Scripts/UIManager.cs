@@ -45,6 +45,7 @@ public class UIManager : MonoBehaviour {
                     Debug.Log("Show PC UI");
                     break;
                 }
+#if UNITY_IPHONE
             case RuntimePlatform.IPhonePlayer:
                 {
                     switch (DeviceManager.Instance.iOSDevice)
@@ -68,6 +69,7 @@ public class UIManager : MonoBehaviour {
                     }
                     break;
                 }
+#endif
             default:
                 {
                     canvasDict[PCCanvasName].gameObject.SetActive(true);
