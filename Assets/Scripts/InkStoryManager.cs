@@ -11,6 +11,12 @@ public class InkStoryManager : MonoBehaviour
     private void Awake()
     {
         inkStory = new Story(inkAsset.text);
+
+        var stateList=inkStory.variablesState["STORY_STATES"] as Ink.Runtime.InkList;
+        foreach(var state in stateList)
+        {
+            Debug.Log(state.Key.ToString());
+        }
     }
 
     public bool CanContineStory()
@@ -36,6 +42,16 @@ public class InkStoryManager : MonoBehaviour
     public void MakeChoice(int choiceID)
     {
         inkStory.ChooseChoiceIndex(choiceID);
+    }
+
+    public string GetVariableStateAsString(string variableName)
+    {
+        return inkStory.variablesState[variableName].ToString();
+    }
+
+    public object GetVariableState(string variableName)
+    {
+        return inkStory.variablesState[variableName];
     }
 
 
