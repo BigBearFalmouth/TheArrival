@@ -22,10 +22,39 @@ public class GameLogic : MonoBehaviour {
     public GameObject ButtonPanel;
     public Button ExitButton;
 
+    Dictionary<string, Texture> StoryBackgroundStates;
+    public string CurrentStoryState;
+    public List<Texture> StoryBackgrounds;
+
+    public RawImage BackgroundImage;
+
+
 	// Use this for initialization
 	void Start () {
-        InkStoryManager = GetComponent<InkStoryManager>();	
-	}
+        InkStoryManager = GetComponent<InkStoryManager>();
+        PopulateStoryStates();
+
+    }
+
+    public void CheckState()
+    {
+        CurrentStoryState = InkStoryManager.GetVariableStateAsString("currentStoryState");
+        BackgroundImage.texture = StoryBackgroundStates[CurrentStoryState];
+    }
+
+    public void PopulateStoryStates()
+    {
+        StoryBackgroundStates = new Dictionary<string, Texture>();
+        InkList storyStateList=InkStoryManager.GetVariable("STORY_STATES") as InkList;
+        int i = 0;
+        foreach (var state in storyStateList.all.Keys)
+        {
+            StoryBackgroundStates[state.itemName] = StoryBackgrounds[i];
+            i++;
+        }
+        CheckState();
+
+    }
 
     public void ShowInventoryClicked()
     {
@@ -39,6 +68,7 @@ public class GameLogic : MonoBehaviour {
         {
             string text = InkStoryManager.GetStoryContent();
             StoryTextUI.text = text;
+            CheckState();
 
             List<Choice> choices = InkStoryManager.GetChoices();
             if (choices.Count > 0)
@@ -80,5 +110,6 @@ public class GameLogic : MonoBehaviour {
             Destroy(child.gameObject);
         }
         StoryTextUI.text = "";
+
     }
 }

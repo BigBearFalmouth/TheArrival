@@ -11,9 +11,11 @@ public class InkStoryManager : MonoBehaviour
     private void Awake()
     {
         inkStory = new Story(inkAsset.text);
+    }
 
-        //can we grab the list and turn it into dict keys?
-        var stateList=inkStory.variablesState["STORY_STATES"] as Ink.Runtime.InkList;
+    public object GetVariable(string name)
+    {
+        return inkStory.variablesState[name];
     }
 
     public bool CanContineStory()
