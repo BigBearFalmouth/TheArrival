@@ -12,11 +12,8 @@ public class InkStoryManager : MonoBehaviour
     {
         inkStory = new Story(inkAsset.text);
 
+        //can we grab the list and turn it into dict keys?
         var stateList=inkStory.variablesState["STORY_STATES"] as Ink.Runtime.InkList;
-        foreach(var state in stateList)
-        {
-            Debug.Log(state.Key.ToString());
-        }
     }
 
     public bool CanContineStory()
