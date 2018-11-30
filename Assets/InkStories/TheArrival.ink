@@ -28,13 +28,13 @@ VAR currentStoryState=QUEEN_ST
 
 === menu ===
 ~currentStoryState=MAP
-*{unlockBank and hasReichsmarks}[Visit Bank]->bank
-+{unlockPostOffice and hasEnglishLetter}[Visit Post Office]->postOffice
-+{unlockBuchananRailwayStation and not metSister}[Visit Buchannan St Station]->buchannanStStation
-+{unlockButcher and not gotFed}[Visit Butchers]->butchers
-+{unlockGrandCentralHotel and not checkIn}[Visit Grand Central Hotel]->grandCentral
-*{not hasMetPoliceDiaryEntry}[Visit Underground]->underground
-*[Visit Queen St. Station]->queenSt
+*{unlockBank and hasReichsmarks}[Bank]->bank
++{unlockPostOffice and hasEnglishLetter}[PostOffice]->postOffice
++{unlockBuchananRailwayStation and not metSister}[BuchannanStStation]->buchannanStStation
++{unlockButcher and not gotFed}[Butchers]->butchers
++{unlockGrandCentralHotel and not checkIn}[GrandCentralHotel]->grandCentral
+*{not hasMetPoliceDiaryEntry}[Underground]->underground
+*[QueenStreet]->queenSt
 +{letterSent and checkIn and gotFed and metSister}[End]->ending
 
 

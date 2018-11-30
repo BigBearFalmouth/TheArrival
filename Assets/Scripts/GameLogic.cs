@@ -18,14 +18,15 @@ public class GameLogic : MonoBehaviour {
     public bool ShowInventory = false;
     public InkStoryManager InkStoryManager;
     public Text StoryTextUI;
-    public Button ChoiceButtonPrefab;
-    public GameObject ButtonPanel;
     public Button ExitButton;
+    public Button[] ChoiceButtons;
+    public Button[] MapPinButtons;
 
     Dictionary<string, Texture> StoryBackgroundStates;
     public string CurrentStoryState;
     public List<Texture> StoryBackgrounds;
 
+    Dictionary<string, Button> MapButtonsLookUp;
     public RawImage BackgroundImage;
 
 
@@ -33,7 +34,12 @@ public class GameLogic : MonoBehaviour {
 	void Start () {
         InkStoryManager = GetComponent<InkStoryManager>();
         PopulateStoryStates();
-
+        MapButtonsLookUp = new Dictionary<string, Button>();
+        foreach(Button b in MapPinButtons)
+        {
+            MapButtonsLookUp[b.name] = b;
+            b.gameObject.SetActive(false);
+        }
     }
 
     public void CheckState()
@@ -64,40 +70,14 @@ public class GameLogic : MonoBehaviour {
 
     private void Update()
     {
-        while(InkStoryManager.CanContineStory())
+        CheckState();
+        if (CurrentStoryState=="Map")
         {
-            string text = InkStoryManager.GetStoryContent();
-            StoryTextUI.text = text;
-            CheckState();
-
-            List<Choice> choices = InkStoryManager.GetChoices();
-            if (choices.Count > 0)
-            {
-                for (int i = 0; i < choices.Count - 1; i++)
-                {
-                    GameChoice currentChoice = new GameChoice
-                    {
-                        Name = choices[i].text,
-                        Index = choices[i].index
-                        
-                    };
-
-
-                    Button button = Instantiate<Button>(ChoiceButtonPrefab);
-                    button.GetComponentInChildren<Text>().text = choices[i].text;
-                    button.onClick.AddListener(() => OnClickButton(currentChoice));
-                    button.transform.SetParent(ButtonPanel.transform, false);
-                }
-
-                GameChoice exitChoice = new GameChoice
-                {
-                    Name = choices[choices.Count - 1].text,
-                    Index = choices[choices.Count - 1].index
-
-                };
-                ExitButton.onClick.RemoveAllListeners();
-                ExitButton.onClick.AddListener(() => OnClickButton(exitChoice));
-            }
+            OnMapState();
+        }
+        else
+        {
+            OnMenuStates();
         }
     }
 
@@ -105,11 +85,62 @@ public class GameLogic : MonoBehaviour {
     {
         Debug.Log("Choice Picked " + choice.Name);
         InkStoryManager.MakeChoice(choice.Index);
-        foreach (Transform child in ButtonPanel.transform)
-        {
-            Destroy(child.gameObject);
-        }
+
         StoryTextUI.text = "";
 
+    }
+
+    void OnMapState()
+    {
+
+    }
+
+    void OnMenuStates()
+    {
+        while (InkStoryManager.CanContineStory())
+        {
+            string text = InkStoryManager.GetStoryContent();
+            StoryTextUI.text = text;
+
+            List<Choice> choices = InkStoryManager.GetChoices();
+            if (choices.Count > 0)
+            {
+
+                foreach (Button b in ChoiceButtons)
+                {
+                    b.gameObject.SetActive(false);
+                }
+                for (int i = 0; i < choices.Count - 1; i++)
+                {
+                    GameChoice currentChoice = new GameChoice
+                    {
+                        Name = choices[i].text,
+                        Index = choices[i].index
+
+                    };
+
+                    Debug.Log(choices[i].pathStringOnChoice);
+                    if (i < ChoiceButtons.Length)
+                    {
+                        Button button = ChoiceButtons[i];
+                        button.gameObject.SetActive(true);
+                        button.onClick.RemoveAllListeners();
+                        button.GetComponentInChildren<Text>().text = choices[i].text;
+                        button.onClick.AddListener(() => OnClickButton(currentChoice));
+                    }
+                }
+
+
+                GameChoice exitChoice = new GameChoice
+                {
+                    Name = choices[choices.Count - 1].text,
+                    Index = choices[choices.Count - 1].index
+
+                };
+                ExitButton.gameObject.SetActive(true);
+                ExitButton.onClick.RemoveAllListeners();
+                ExitButton.onClick.AddListener(() => OnClickButton(exitChoice));
+            }
+        }
     }
 }
