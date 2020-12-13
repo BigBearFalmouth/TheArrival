@@ -7,7 +7,7 @@ public class MainMenuLogic : MonoBehaviour
 {
     public void OnStartClicked()
     {
-        SceneManager.LoadSceneAsync("Start");
+        SceneManager.LoadSceneAsync("Game");
     }
 
     public void OnAboutClicked()

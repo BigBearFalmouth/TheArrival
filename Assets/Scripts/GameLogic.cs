@@ -8,16 +8,23 @@ struct GameChoice
 {
     public string Name;
     public int Index;
+
+    public override string ToString()
+    {
+        return string.Format("Choice - {0} ID - {1}", Name, Index);
+    }
 }
 
 
 [RequireComponent(typeof(InkStoryManager))]
-public class GameLogic : MonoBehaviour {
+public class GameLogic : MonoBehaviour 
+{
 
     public Animator InventoryAnimator;
     public bool ShowInventory = false;
     public InkStoryManager InkStoryManager;
     public Text StoryTextUI;
+    public Text PlayerTextUI;
     public Button ExitButton;
     public Button[] ChoiceButtons;
     public Button[] MapPinButtons;
@@ -29,6 +36,7 @@ public class GameLogic : MonoBehaviour {
     Dictionary<string, Button> MapButtonsLookUp;
     public RawImage BackgroundImage;
 
+    public GameObject LocationPanel;
 
 	// Use this for initialization
 	void Start () {
@@ -40,12 +48,23 @@ public class GameLogic : MonoBehaviour {
             MapButtonsLookUp[b.name] = b;
             b.gameObject.SetActive(false);
         }
+        CheckState();
     }
 
     public void CheckState()
     {
         CurrentStoryState = InkStoryManager.GetVariableStateAsString("currentStoryState");
         BackgroundImage.texture = StoryBackgroundStates[CurrentStoryState];
+        PlayerTextUI.text = CurrentStoryState;
+        print(CurrentStoryState);
+        if (CurrentStoryState == "MAP")
+        {
+            OnMapState();
+        }
+        else
+        {
+            OnMenuStates();
+        }
     }
 
     public void PopulateStoryStates()
@@ -58,7 +77,7 @@ public class GameLogic : MonoBehaviour {
             StoryBackgroundStates[state.itemName] = StoryBackgrounds[i];
             i++;
         }
-        CheckState();
+        
 
     }
 
@@ -68,35 +87,27 @@ public class GameLogic : MonoBehaviour {
         InventoryAnimator.SetBool("ShowPanel", ShowInventory);
     }
 
-    private void Update()
-    {
-        CheckState();
-        if (CurrentStoryState=="Map")
-        {
-            OnMapState();
-        }
-        else
-        {
-            OnMenuStates();
-        }
-    }
 
     private void OnClickButton(GameChoice choice)
     {
         Debug.Log("Choice Picked " + choice.Name);
         InkStoryManager.MakeChoice(choice.Index);
-
         StoryTextUI.text = "";
+        CheckState();
 
     }
 
     void OnMapState()
     {
+        //Need to hide location panel
+        LocationPanel.SetActive(false);
 
     }
 
     void OnMenuStates()
     {
+        LocationPanel.SetActive(true);
+        //Need to show the correct image and Location Panel
         while (InkStoryManager.CanContineStory())
         {
             string text = InkStoryManager.GetStoryContent();
@@ -110,7 +121,7 @@ public class GameLogic : MonoBehaviour {
                 {
                     b.gameObject.SetActive(false);
                 }
-                for (int i = 0; i < choices.Count - 1; i++)
+                for (int i = 0; i < choices.Count; i++)
                 {
                     GameChoice currentChoice = new GameChoice
                     {
@@ -119,7 +130,7 @@ public class GameLogic : MonoBehaviour {
 
                     };
 
-                    Debug.Log(choices[i].pathStringOnChoice);
+                    Debug.Log(currentChoice);
                     if (i < ChoiceButtons.Length)
                     {
                         Button button = ChoiceButtons[i];
@@ -129,8 +140,6 @@ public class GameLogic : MonoBehaviour {
                         button.onClick.AddListener(() => OnClickButton(currentChoice));
                     }
                 }
-
-
                 GameChoice exitChoice = new GameChoice
                 {
                     Name = choices[choices.Count - 1].text,
