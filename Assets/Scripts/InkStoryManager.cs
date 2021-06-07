@@ -13,6 +13,11 @@ public class InkStoryManager : MonoBehaviour
         inkStory = new Story(inkAsset.text);
     }
 
+    public void RegisterStoryObserver(string name, Story.VariableObserver observer)
+    {
+        inkStory.ObserveVariable(name, observer);
+    }
+
     public object GetVariable(string name)
     {
         return inkStory.variablesState[name];

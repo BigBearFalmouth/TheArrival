@@ -48,7 +48,24 @@ public class GameLogic : MonoBehaviour
             MapButtonsLookUp[b.name] = b;
             b.gameObject.SetActive(false);
         }
+        InkStoryManager.RegisterStoryObserver("currentStoryState",CheckStoryState);
         CheckState();
+    }
+
+    public void CheckStoryState(string varName, object newValue)
+    {
+        Debug.Log("Story State " + newValue.ToString());
+        CurrentStoryState= newValue.ToString();
+        BackgroundImage.texture = StoryBackgroundStates[CurrentStoryState];
+        PlayerTextUI.text = CurrentStoryState;
+        if (CurrentStoryState == "MAP")
+        {
+            OnMapState();
+        }
+        else
+        {
+            OnMenuStates();
+        }
     }
 
     public void CheckState()
@@ -100,7 +117,10 @@ public class GameLogic : MonoBehaviour
     void OnMapState()
     {
         //Need to hide location panel
+        Debug.Log("In Map");
         LocationPanel.SetActive(false);
+
+        //need to decouple the state from the story
 
     }
 
